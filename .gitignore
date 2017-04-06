@@ -1,0 +1,49 @@
+#GENERAL EXCLUSIONS
+.class
+#.classpath
+#.project
+.settings
+.checkstyle
+*~
+*.swp
+*.log
+
+#
+# ANT GENERATED COMPILATIONS
+# compilation folder by ant
+#
+**/classes
+**/testclasses
+**/hmc/bin
+**/hmc/classes
+
+#
+# ANT GENERATED SOURCES
+# generated jalo sources from items.xml
+#
+**/gensrc
+
+#
+# ECLIPSE COMPILATIONS
+# eclipse compilation folder includes classes,hmc/classes,notused
+#
+**/eclipsebin/
+
+Generated*.java
+
+
+# Intellij
+.idea/
+*.iml
+*.iws
+out/
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+build.xml
+platformhome.properties

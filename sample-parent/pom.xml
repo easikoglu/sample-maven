@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.easikoglu.sample</groupId>
+        <artifactId>sample-dependencies</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../sample-dependencies</relativePath>
+    </parent>
+    <artifactId>sample-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Sample Parent</name>
+    <description>Sample Parent</description>
+
+    <organization>
+        <name>Sample Software Department</name>
+        <url>https://www.asikoglu.net</url>
+    </organization>
+    <properties>
+        <main.basedir>${basedir}/..</main.basedir>
+        <disable.checks>false</disable.checks>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.version>3.1.1</maven.version>
+
+        <!-- EJB spec version -->
+        <maven-ejb-spec.version>3.2</maven-ejb-spec.version>
+
+        <versions-maven-plugin.version>2.2</versions-maven-plugin.version>
+        <!-- Compiler versions -->
+        <maven-compiler-source.version>1.8</maven-compiler-source.version>
+        <maven-compiler-target.version>1.8</maven-compiler-target.version>
+
+    </properties>
+    <scm>
+        <url>stash path</url>
+        <connection></connection>
+        <developerConnection></developerConnection>
+    </scm>
+    <issueManagement>
+        <system>Jira</system>
+        <url>jira path</url>
+    </issueManagement>
+    <ciManagement>
+        <system>Bamboo</system>
+        <url>bamboo path</url>
+    </ciManagement>
+
+    <dependencyManagement>
+        <dependencies>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <!-- compiler plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${maven-compiler-source.version}</source>
+                    <target>${maven-compiler-target.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <useProjectReferences>false</useProjectReferences>
+                    <additionalConfig>
+                        <file>
+                            <name>.settings/org.eclipse.jdt.ui.prefs</name>
+                            <location>${main.basedir}/eclipse/org.eclipse.jdt.ui.prefs</location>
+                        </file>
+                        <file>
+                            <name>.settings/org.eclipse.jdt.core.prefs</name>
+                            <location>${main.basedir}/eclipse/org.eclipse.jdt.core.prefs</location>
+                        </file>
+                    </additionalConfig>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.16</version>
+                <executions>
+                    <execution>
+                        <id>default-test</id> <!-- to override default configuration - in fact: unit tests -->
+                        <configuration>
+                            <excludedGroups>integration</excludedGroups>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- maven ear plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>${maven-ear-plugin.version}</version>
+                <configuration>
+                    <generateModuleId>true</generateModuleId>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!-- ejb plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ejb-plugin</artifactId>
+                <version>${maven-ejb-plugin.version}</version>
+                <configuration>
+                    <ejbVersion>${maven-ejb-spec.version}</ejbVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <!--define different repository for thirdparty dependencies -->
+            </repositories>
+            <pluginRepositories>
+                <!--define different repository for plugins urls -->
+
+            </pluginRepositories>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+
+            </properties>
+
+        </profile>
+     </profiles>
+</project>
